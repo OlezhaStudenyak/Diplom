@@ -1,0 +1,162 @@
+/* Стилі для LogisticianDashboard */
+.logistician-dashboard {
+  background-color: #f8f9fa;
+}
+
+.logistician-dashboard .route-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.logistician-dashboard .route-points-container {
+  margin: 20px 0;
+}
+
+.logistician-dashboard .route-visualization {
+  margin: 30px 0;
+  position: relative;
+}
+
+.logistician-dashboard .route-line {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: calc(100% - 24px);
+  height: 4px;
+  background-color: #3498db;
+  z-index: 1;
+}
+
+.logistician-dashboard .route-stops {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+}
+
+.logistician-dashboard .route-stop {
+  width: 24px;
+  height: 24px;
+  background-color: #3498db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  position: relative;
+}
+
+.logistician-dashboard .route-stop-label {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  color: #34495e;
+  max-width: 100px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.login-return-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.login-return-button:hover {
+    background-color: #d32f2f;
+}
+.logistician-dashboard .routes-map {
+  height: 400px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7f8c8d;
+}
+
+.logistician-dashboard .request-detail {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+
+.logistician-dashboard .request-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.logistician-dashboard .request-title {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.logistician-dashboard .request-date {
+  color: #7f8c8d;
+  font-size: 14px;
+}
+
+.logistician-dashboard .request-details {
+  margin-bottom: 15px;
+}
+
+.logistician-dashboard .request-items {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.login-return-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.login-return-button:hover {
+    background-color: #d32f2f;
+}
+.logistician-dashboard .request-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.logistician-dashboard .request-item:last-child {
+  border-bottom: none;
+}
+
+.logistician-dashboard .request-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}

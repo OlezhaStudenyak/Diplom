@@ -1,0 +1,427 @@
+/* Головні кольори - Логістична тематика */
+:root {
+    --primary-color: #1a4567; /* Темно-синій */
+    --secondary-color: #0078d4; /* Яскраво-синій */
+    --accent-color: #ff6b00; /* Помаранчевий */
+    --light-bg: #f3f7fa; /* Світло-блакитний */
+    --dark-text: #2c3e50; /* Темно-синій */
+    --light-text: #ffffff; /* Білий */
+    --success-color: #47b354; /* Зелений */
+    --warning-color: #ffc107; /* Жовтий */
+    --danger-color: #dc3545; /* Червоний */
+    --border-radius: 4px; /* Закруглення кутів */
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тінь для елементів */
+}
+
+/* Шапка адмін-панелі - Логістична тематика */
+#header {
+    background: var(--primary-color);
+    color: var(--light-text);
+    box-shadow: var(--box-shadow);
+    border-bottom: 3px solid var(--accent-color);
+    padding: 15px 40px;
+    height: auto;
+}
+
+#header a:link, #header a:visited {
+    color: var(--light-text);
+    transition: color 0.3s ease;
+}
+
+#branding h1 {
+    color: var(--light-text);
+    font-size: 1.5em;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+#branding h1::before {
+    content: '\f0d1'; /* Unicode для іконки вантажівки */
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 10px;
+    font-size: 1.2em;
+    color: var(--accent-color);
+}
+
+#user-tools {
+    padding: 5px 0;
+}
+
+#user-tools a {
+    border-bottom: none;
+    font-weight: bold;
+    margin-left: 15px;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+#user-tools a:hover {
+    color: var(--light-text);
+    background-color: var(--accent-color);
+    border-bottom: none;
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Бічна панель - Логістична тематика */
+.module h2, .module caption, .inline-group h2 {
+    background: var(--secondary-color);
+    color: var(--light-text);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: 12px 15px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.module {
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+    border: none;
+    overflow: hidden;
+}
+
+#content-related .module {
+    background-color: var(--light-bg);
+}
+
+div.breadcrumbs {
+    background: var(--secondary-color);
+    color: var(--light-text);
+    padding: 12px 20px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+div.breadcrumbs a {
+    color: var(--light-text);
+    font-weight: 500;
+}
+
+div.breadcrumbs a:hover {
+    color: var(--accent-color);
+}
+
+/* Покращення бокової навігації */
+.sidebar-section h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px 15px 5px;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.sidebar-section ul {
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-section li {
+    list-style-type: none;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+.sidebar-section li:hover,
+.sidebar-section li.selected {
+    border-left-color: var(--accent-color);
+    background-color: rgba(255, 107, 0, 0.05);
+}
+
+.sidebar-section li a {
+    display: block;
+    padding: 8px 10px 8px 15px;
+    color: var(--dark-text);
+    text-decoration: none;
+}
+
+.sidebar-section li.selected a {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Кнопки - Логістична тематика */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--secondary-color);
+    color: var(--light-text);
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    padding: 10px 15px;
+    border: none;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover, a.button:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button.default, input[type=submit].default, .submit-row input.default {
+    background: var(--accent-color);
+    font-weight: 700;
+}
+
+.button.default:hover, input[type=submit].default:hover {
+    background: #e05e00;
+}
+
+/* Кнопки дій */
+.object-tools a {
+    background: var(--secondary-color);
+    padding: 8px 15px;
+    border-radius: var(--border-radius);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.object-tools a:hover {
+    background: var(--primary-color);
+}
+
+.object-tools a.addlink {
+    background: var(--success-color);
+}
+
+.object-tools a.addlink:hover {
+    background: #3c9c47;
+}
+
+/* Форми */
+form .form-row {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+form .form-row:last-child {
+    border-bottom: none;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=url], input[type=number], input[type=tel], textarea, select, .vTextField {
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    padding: 8px 12px;
+    transition: border-color 0.3s;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus, input[type=url]:focus, input[type=number]:focus, input[type=tel]:focus, textarea:focus, select:focus, .vTextField:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(0, 120, 212, 0.3);
+}
+
+.submit-row {
+    background: var(--light-bg);
+    border-top: 1px solid #e0e0e0;
+    padding: 15px 20px;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+/* Таблиці - Логістична тематика */
+#changelist table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 25px;
+}
+
+table thead th {
+    background: var(--primary-color);
+    color: var(--light-text);
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: none;
+}
+
+table thead th a {
+    color: var(--light-text);
+}
+
+table thead th.sorted {
+    background: var(--secondary-color);
+}
+
+.row1 {
+    background: #fff;
+}
+
+.row2 {
+    background: var(--light-bg);
+}
+
+#changelist tbody tr:hover {
+    background-color: rgba(0, 120, 212, 0.05);
+}
+
+#changelist tbody td, #changelist tbody th {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+#changelist tbody tr:last-child td, 
+#changelist tbody tr:last-child th {
+    border-bottom: none;
+}
+
+/* Статусні індикатори для логістики */
+.status-circle {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.status-delivered {
+    background-color: var(--success-color);
+}
+
+.status-transit {
+    background-color: var(--accent-color);
+}
+
+.status-pending {
+    background-color: var(--warning-color);
+}
+
+.status-failed {
+    background-color: var(--danger-color);
+}
+
+/* Інші статуси */
+.status-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-active {
+    background-color: rgba(71, 179, 84, 0.15);
+    color: var(--success-color);
+}
+
+.status-inactive {
+    background-color: rgba(220, 53, 69, 0.15);
+    color: var(--danger-color);
+}
+
+.status-transit {
+    background-color: rgba(255, 107, 0, 0.15);
+    color: var(--accent-color);
+}
+
+.status-pending {
+    background-color: rgba(255, 193, 7, 0.15);
+    color: #d39e00;
+}
+
+/* Повідомлення - Логістична тематика */
+.success, .warning, .error, .info, .errornote {
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin: 15px 0;
+    border-left: 5px solid;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    align-items: center;
+}
+
+.success::before, .warning::before, .error::before, .info::before, .errornote::before {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.success {
+    background: rgba(71, 179, 84, 0.1);
+    color: #2d7a3d;
+    border-left-color: var(--success-color);
+}
+
+.success::before {
+    content: '\f058'; /* check-circle */
+    color: var(--success-color);
+}
+
+.warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #c79500;
+    border-left-color: var(--warning-color);
+}
+
+.warning::before {
+    content: '\f071'; /* exclamation-triangle */
+    color: var(--warning-color);
+}
+
+.error, .errornote {
+    background: rgba(220, 53, 69, 0.1);
+    color: #b21e2d;
+    border-left-color: var(--danger-color);
+}
+
+.error::before, .errornote::before {
+    content: '\f057'; /* times-circle */
+    color: var(--danger-color);
+}
+
+.info {
+    background: rgba(0, 120, 212, 0.1);
+    color: #0062ad;
+    border-left-color: var(--secondary-color);
+}
+
+.info::before {
+    content: '\f05a'; /* info-circle */
+    color: var(--secondary-color);
+}
+
+/* Додаткові логістичні іконки */
+.logistics-icon {
+    display: inline-block;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-right: 5px;
+}
+
+.icon-warehouse::before {
+    content: '\f494'; /* warehouse */
+    color: var(--secondary-color);
+}
+
+.icon-truck::before {
+    content: '\f0d1'; /* truck */
+    color: var(--accent-color);
+}
+
+.icon-route::before {
+    content: '\f4d7'; /* route */
+    color: var(--success-color);
+}
+
+.icon-package::before {
+    content: '\f466'; /* box */
+    color: var(--primary-color);
+}
+
+/* Додавання Font Awesome для іконок */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');

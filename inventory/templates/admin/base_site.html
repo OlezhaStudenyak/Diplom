@@ -1,0 +1,103 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Логістична система складського обліку') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">
+        <i class="fas fa-truck-loading"></i> Логістична система складського обліку
+    </a>
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/css/custom_admin.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}
+
+{% block nav-global %}
+<li><a href="{% url 'admin:custom_analytics' %}" class="analytics-link"><i class="fas fa-chart-line"></i> Аналітика</a></li>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    /* Додаткові стилі для адмін-панелі логістичної компанії */
+    body {
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    /* Логотип з анімацією */
+    #branding h1 {
+        display: flex;
+        align-items: center;
+    }
+
+    #branding h1 i {
+        margin-right: 10px;
+        color: var(--accent-color);
+        font-size: 1.2em;
+        animation: truck-pulse 3s infinite;
+    }
+
+    @keyframes truck-pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    /* Стилізація дашборду */
+    .dashboard .module table td a {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+    }
+
+    .dashboard .module table td a::before {
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        margin-right: 8px;
+        font-size: 1.1em;
+        opacity: 0.7;
+    }
+
+    .dashboard .module table td a[href*="/inventory/"]::before {
+        content: '\f494'; /* warehouse */
+        color: var(--secondary-color);
+    }
+
+    .dashboard .module table td a[href*="/user/"]::before {
+        content: '\f007'; /* user */
+        color: var(--primary-color);
+    }
+
+    .dashboard .module table td a[href*="/vehicle/"]::before {
+        content: '\f0d1'; /* truck */
+        color: var(--accent-color);
+    }
+
+    .dashboard .module table td a[href*="/route/"]::before {
+        content: '\f4d7'; /* route */
+        color: var(--success-color);
+    }
+
+    .dashboard .module table td a[href*="/product/"]::before {
+        content: '\f466'; /* box */
+        color: var(--primary-color);
+    }
+
+    .dashboard .module table td a[href*="/batch/"]::before {
+        content: '\f468'; /* box-open */
+        color: var(--warning-color);
+    }
+
+    .dashboard .module table td a[href*="/transaction/"]::before {
+        content: '\f0ec'; /* exchange-alt */
+        color: var(--secondary-color);
+    }
+
+    .dashboard .module table td a[href*="/request/"]::before {
+        content: '\f15b'; /* file-alt */
+        color: var(--accent-color);
+    }
+</style>
+{% endblock %}
