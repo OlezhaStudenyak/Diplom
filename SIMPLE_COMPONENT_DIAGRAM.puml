@@ -1,0 +1,185 @@
+@startuml
+!theme plain
+skinparam backgroundColor white
+skinparam monochrome true
+skinparam shadowing false
+
+skinparam component {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+    FontSize 11
+    FontStyle bold
+    BorderThickness 2
+}
+
+skinparam package {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+    FontSize 13
+    FontStyle bold
+    BorderThickness 3
+}
+
+skinparam interface {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+    FontSize 10
+    BorderThickness 1
+}
+
+skinparam arrow {
+    Color black
+    FontColor black
+    FontSize 9
+    Thickness 2
+}
+
+title **Діаграма компонентів системи LogistiTrack**\n**Спрощена архітектура**
+
+' ===== ОСНОВНІ ШАРИ =====
+
+package "**КЛІЄНТСЬКИЙ РІВЕНЬ**" as ClientLayer {
+    component [**Веб-браузер**\nReact додаток] as WebBrowser
+    component [**Мобільний додаток**\n(майбутнє)] as MobileApp
+}
+
+package "**ФРОНТЕНД ДОДАТОК**" as FrontendApp {
+    component [**Компоненти інтерфейсу**\nReact Components] as UIComponents
+    component [**Управління станом**\nZustand Stores] as StateManagement
+    component [**Маршрутизація**\nReact Router] as Routing
+}
+
+package "**БЕКЕНД СЕРВІСИ**" as BackendServices {
+    component [**API Сервер**\nSupabase Platform] as APIServer
+    component [**Аутентифікація**\nAuth Service] as AuthService
+    component [**Real-time**\nWebSocket] as RealtimeService
+    component [**Файлове сховище**\nStorage] as FileStorage
+}
+
+package "**БАЗА ДАНИХ**" as DatabaseLayer {
+    component [**PostgreSQL**\nОсновна БД] as MainDatabase
+    component [**Безпека**\nRow Level Security] as Security
+    component [**Тригери**\nАвтоматизація] as Triggers
+}
+
+package "**ЗОВНІШНІ СЕРВІСИ**" as ExternalServices {
+    component [**Mapbox**\nКарти та GPS] as MapboxService
+    component [**Геокодування**\nАдреси → Координати] as GeocodingService
+}
+
+' ===== ІНТЕРФЕЙСИ =====
+
+interface "HTTPS" as HTTPS
+interface "WebSocket" as WSInterface
+interface "REST API" as RestAPI
+interface "SQL" as SQLInterface
+interface "HTTP API" as HTTPInterface
+
+' ===== ЗВ'ЯЗКИ =====
+
+' Клієнт → Фронтенд
+WebBrowser --> HTTPS
+MobileApp --> HTTPS
+HTTPS --> UIComponents
+
+' Фронтенд внутрішні зв'язки
+UIComponents --> StateManagement : "Оновлення стану"
+UIComponents --> Routing : "Навігація"
+StateManagement --> RestAPI : "API запити"
+
+' Фронтенд → Бекенд
+RestAPI --> APIServer
+WSInterface --> RealtimeService
+StateManagement --> WSInterface : "Real-time оновлення"
+
+' Бекенд внутрішні зв'язки
+APIServer --> AuthService : "Перевірка прав"
+APIServer --> SQLInterface : "Запити до БД"
+RealtimeService --> SQLInterface : "Підписки"
+
+' Бекенд → База даних
+SQLInterface --> MainDatabase
+MainDatabase --> Security : "Контроль доступу"
+MainDatabase --> Triggers : "Автоматичні дії"
+
+' Зовнішні сервіси
+StateManagement --> HTTPInterface : "Карти та GPS"
+HTTPInterface --> MapboxService
+HTTPInterface --> GeocodingService
+
+' ===== ПРИМІТКИ =====
+
+note top of ClientLayer
+  **КОРИСТУВАЧІ:**
+  • Адміністратори
+  • Менеджери
+  • Працівники складу
+  • Логісти
+  • Водії
+  • Клієнти
+end note
+
+note right of FrontendApp
+  **ОСНОВНІ МОДУЛІ:**
+  • Управління товарами
+  • Управління складами
+  • Обробка замовлень
+  • Логістика та доставка
+  • Відстеження GPS
+  • Звітність
+end note
+
+note bottom of BackendServices
+  **ФУНКЦІЇ БЕКЕНДУ:**
+  • Обробка API запитів
+  • Аутентифікація користувачів
+  • Real-time сповіщення
+  • Зберігання файлів
+  • Бізнес-логіка
+end note
+
+note left of DatabaseLayer
+  **ДАНІ СИСТЕМИ:**
+  • Користувачі та ролі
+  • Товари та категорії
+  • Склади та зони
+  • Замовлення та позиції
+  • Транспорт та маршрути
+  • Запаси та транзакції
+end note
+
+note bottom of ExternalServices
+  **ІНТЕГРАЦІЇ:**
+  • Відображення карт
+  • GPS відстеження
+  • Оптимізація маршрутів
+  • Геокодування адрес
+end note
+
+' ===== ДОДАТКОВІ КОМПОНЕНТИ =====
+
+package "**АВТОМАТИЗАЦІЯ**" as AutomationLayer {
+    component [**Тригери БД**\nАвтоматичні дії] as DBTriggers
+    component [**GPS Симуляція**\nДемо відстеження] as GPSSimulation
+    component [**Сповіщення**\nReal-time alerts] as NotificationSystem
+}
+
+' Зв'язки автоматизації
+Triggers --> DBTriggers : "Виконання"
+DBTriggers --> NotificationSystem : "Генерація сповіщень"
+DBTriggers --> GPSSimulation : "Запуск симуляції"
+NotificationSystem --> RealtimeService : "Відправка"
+
+note right of AutomationLayer
+  **АВТОМАТИЧНІ ПРОЦЕСИ:**
+  • Резервування товарів
+  • Створення маршрутів
+  • Оновлення статусів
+  • GPS симуляція
+  • Push сповіщення
+end note
+
+@enduml

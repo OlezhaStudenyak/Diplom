@@ -1,0 +1,255 @@
+@startuml
+!theme aws-orange
+skinparam backgroundColor #FAFAFA
+skinparam participant {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontColor #1565C0
+    FontSize 12
+    FontStyle bold
+}
+skinparam arrow {
+    Color #1976D2
+    FontColor #424242
+    FontSize 10
+}
+skinparam note {
+    BackgroundColor #FFF3E0
+    BorderColor #F57C00
+    FontColor #E65100
+}
+
+title <size:16><color:#1565C0>🚀 Діаграма послідовності: Обробка замовлення в LogistiTrack</color></size>
+
+actor "👤\nКлієнт" as Customer #FFE0B2
+participant "🖥️\nFrontend" as Frontend #E1F5FE
+participant "🔐\nAuth" as Auth #F3E5F5
+participant "📦\nOrder API" as OrderAPI #E8F5E8
+participant "📊\nInventory" as Inventory #FFF8E1
+participant "🗄️\nDatabase" as DB #EFEBE9
+participant "🗺️\nMapbox" as Mapbox #E0F2F1
+participant "🚛\nLogistics" as Logistics #FCE4EC
+participant "🔔\nNotifications" as Notifications #F1F8E9
+
+== 📝 Створення замовлення ==
+
+Customer -> Frontend: <color:#2E7D32>**1.** Створює замовлення\n(товари + адреса)</color>
+activate Frontend #E3F2FD
+
+Frontend -> Auth: <color:#7B1FA2>**2.** Перевірка автентифікації</color>
+activate Auth #F3E5F5
+Auth --> Frontend: <color:#7B1FA2>**3.** ✅ JWT валідний</color>
+deactivate Auth
+
+Frontend -> Frontend: <color:#F57C00>**4.** Валідація даних</color>
+note right of Frontend #FFF3E0
+  Перевірка:
+  • Обов'язкові поля
+  • Формат даних
+  • Кількість товарів
+end note
+
+Frontend -> Inventory: <color:#388E3C>**5.** Перевірка наявності товарів</color>
+activate Inventory #FFF8E1
+
+Inventory -> DB: <color:#5D4037>**6.** SELECT запаси</color>
+activate DB #EFEBE9
+DB --> Inventory: <color:#5D4037>**7.** Дані про запаси</color>
+deactivate DB
+
+alt <color:#D32F2F>❌ Недостатньо товарів</color>
+    Inventory --> Frontend: <color:#D32F2F>**8a.** Помилка: товар відсутній</color>
+    Frontend --> Customer: <color:#D32F2F>**9a.** ❌ Неможливо створити замовлення</color>
+else <color:#388E3C>✅ Товари є в наявності</color>
+    Inventory --> Frontend: <color:#388E3C>**8b.** ✅ Товари доступні</color>
+    deactivate Inventory
+    
+    Frontend -> Mapbox: <color:#00796B>**9.** Геокодування адреси</color>
+    activate Mapbox #E0F2F1
+    Mapbox --> Frontend: <color:#00796B>**10.** 📍 Координати (lat, lng)</color>
+    deactivate Mapbox
+    
+    Frontend -> OrderAPI: <color:#1976D2>**11.** Створення замовлення</color>
+    activate OrderAPI #E8F5E8
+    
+    OrderAPI -> DB: <color:#5D4037>**12.** INSERT замовлення</color>
+    activate DB #EFEBE9
+    DB --> OrderAPI: <color:#5D4037>**13.** 🆔 order_id</color>
+    
+    loop <color:#FF6F00>Для кожного товару</color>
+        OrderAPI -> DB: <color:#5D4037>**14.** INSERT товар</color>
+        note over DB #FFF3E0
+          Автоматичний тригер
+          оновлює загальну суму
+        end note
+    end
+    
+    DB --> OrderAPI: <color:#5D4037>**15.** ✅ Замовлення створено</color>
+    deactivate DB
+    
+    OrderAPI --> Frontend: <color:#1976D2>**16.** ✅ Успіх</color>
+    deactivate OrderAPI
+    
+    Frontend --> Customer: <color:#2E7D32>**17.** 🎉 Замовлення створено!</color>
+end
+
+deactivate Frontend
+
+== 👔 Обробка персоналом ==
+
+participant "👔\nПерсонал" as Staff #FFECB3
+
+Staff -> Frontend: <color:#F57C00>**18.** Переглядає замовлення</color>
+activate Frontend #E3F2FD
+
+Frontend -> OrderAPI: <color:#1976D2>**19.** Отримання деталей</color>
+activate OrderAPI #E8F5E8
+
+OrderAPI -> DB: <color:#5D4037>**20.** SELECT замовлення</color>
+activate DB #EFEBE9
+DB --> OrderAPI: <color:#5D4037>**21.** Дані замовлення</color>
+deactivate DB
+
+OrderAPI --> Frontend: <color:#1976D2>**22.** Деталі замовлення</color>
+deactivate OrderAPI
+
+Staff -> Frontend: <color:#F57C00>**23.** ✅ Підтверджує замовлення</color>
+
+Frontend -> OrderAPI: <color:#1976D2>**24.** Оновлення статусу → "confirmed"</color>
+activate OrderAPI #E8F5E8
+
+OrderAPI -> DB: <color:#5D4037>**25.** UPDATE статус</color>
+activate DB #EFEBE9
+
+note over DB #E8F5E8
+  🤖 **Автоматичні тригери:**
+  • Резервування товарів
+  • Створення історії
+  • Генерація сповіщень
+end note
+
+DB -> Notifications: <color:#689F38>**26.** Створення сповіщення</color>
+activate Notifications #F1F8E9
+Notifications --> Customer: <color:#689F38>**27.** 🔔 "Замовлення підтверджено"</color>
+deactivate Notifications
+
+DB --> OrderAPI: <color:#5D4037>**28.** ✅ Статус оновлено</color>
+deactivate DB
+
+OrderAPI --> Frontend: <color:#1976D2>**29.** ✅ Підтверджено</color>
+deactivate OrderAPI
+
+== 📦 Підготовка до відправки ==
+
+Staff -> Frontend: <color:#F57C00>**30.** Статус → "processing"</color>
+Staff -> Frontend: <color:#F57C00>**31.** Статус → "shipped"</color>
+
+Frontend -> OrderAPI: <color:#1976D2>**32.** Відправка замовлення</color>
+activate OrderAPI #E8F5E8
+
+OrderAPI -> DB: <color:#5D4037>**33.** UPDATE статус → "shipped"</color>
+activate DB #EFEBE9
+
+note over DB #FCE4EC
+  🚛 **Автоматичне створення маршруту**
+  Тригер: create_automatic_delivery_route
+end note
+
+DB -> Logistics: <color:#C2185B>**34.** Створення маршруту</color>
+activate Logistics #FCE4EC
+
+Logistics -> Mapbox: <color:#00796B>**35.** Оптимізація маршруту</color>
+activate Mapbox #E0F2F1
+Mapbox --> Logistics: <color:#00796B>**36.** 🗺️ Оптимальний маршрут</color>
+deactivate Mapbox
+
+Logistics -> DB: <color:#5D4037>**37.** Збереження маршруту</color>
+deactivate Logistics
+
+DB --> OrderAPI: <color:#5D4037>**38.** ✅ Маршрут створено</color>
+deactivate DB
+
+OrderAPI --> Frontend: <color:#1976D2>**39.** ✅ Відправлено</color>
+deactivate OrderAPI
+
+== 🚗 Доставка ==
+
+participant "🚗\nВодій" as Driver #E8EAF6
+
+Driver -> Frontend: <color:#3F51B5>**40.** Переглядає маршрут</color>
+activate Frontend #E3F2FD
+
+Frontend -> Logistics: <color:#C2185B>**41.** Отримання маршруту</color>
+activate Logistics #FCE4EC
+
+Logistics -> DB: <color:#5D4037>**42.** SELECT маршрут</color>
+activate DB #EFEBE9
+DB --> Logistics: <color:#5D4037>**43.** Дані маршруту</color>
+deactivate DB
+
+Logistics --> Frontend: <color:#C2185B>**44.** Деталі маршруту</color>
+deactivate Logistics
+
+Driver -> Frontend: <color:#3F51B5>**45.** 🚀 Починає доставку</color>
+
+Frontend -> Logistics: <color:#C2185B>**46.** Статус → "in_progress"</color>
+activate Logistics #FCE4EC
+
+Logistics -> DB: <color:#5D4037>**47.** UPDATE маршрут</color>
+activate DB #EFEBE9
+
+note over DB #E0F2F1
+  📍 **GPS Відстеження**
+  Запуск симуляції руху
+end note
+
+loop <color:#00796B>📍 GPS оновлення (кожні 5 сек)</color>
+    DB -> DB: <color:#5D4037>**48.** UPDATE координати</color>
+    DB -> Notifications: <color:#689F38>**49.** Live оновлення</color>
+    activate Notifications #F1F8E9
+    Notifications --> Customer: <color:#689F38>**50.** 📍 Позиція транспорту</color>
+    deactivate Notifications
+end
+
+DB --> Logistics: <color:#5D4037>**51.** ✅ Доставка розпочата</color>
+deactivate DB
+deactivate Logistics
+
+== 🎯 Завершення доставки ==
+
+Driver -> Frontend: <color:#3F51B5>**52.** ✅ Підтверджує доставку</color>
+
+Frontend -> Logistics: <color:#C2185B>**53.** Завершення доставки</color>
+activate Logistics #FCE4EC
+
+Logistics -> DB: <color:#5D4037>**54.** UPDATE статус → "completed"</color>
+activate DB #EFEBE9
+
+DB -> OrderAPI: <color:#1976D2>**55.** Статус замовлення → "delivered"</color>
+activate OrderAPI #E8F5E8
+
+OrderAPI -> Notifications: <color:#689F38>**56.** Сповіщення про доставку</color>
+activate Notifications #F1F8E9
+Notifications --> Customer: <color:#689F38>**57.** 🎉 "Замовлення доставлено!"</color>
+deactivate Notifications
+
+DB --> OrderAPI: <color:#5D4037>**58.** ✅ Замовлення доставлено</color>
+deactivate OrderAPI
+
+DB --> Logistics: <color:#5D4037>**59.** ✅ Доставка завершена</color>
+deactivate DB
+deactivate Logistics
+
+Frontend --> Driver: <color:#3F51B5>**60.** ✅ Доставка підтверджена</color>
+deactivate Frontend
+
+note over Customer, Notifications #E8F5E8
+  <size:14><color:#2E7D32>🎉 **УСПІШНЕ ЗАВЕРШЕННЯ**</color></size>
+  
+  ✅ Замовлення оброблено та доставлено
+  📊 Всі дані збережено для звітності  
+  🔔 Клієнт отримав всі сповіщення
+  📍 GPS трек збережено для аналізу
+end note
+
+@enduml

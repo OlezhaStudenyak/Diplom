@@ -1,0 +1,327 @@
+@startuml
+!theme plain
+skinparam backgroundColor white
+skinparam monochrome true
+skinparam shadowing false
+
+skinparam component {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+    FontSize 10
+    FontStyle bold
+    BorderThickness 2
+}
+
+skinparam interface {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+    FontSize 9
+    BorderThickness 1
+}
+
+skinparam package {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+    FontSize 12
+    FontStyle bold
+    BorderThickness 2
+}
+
+skinparam note {
+    BackgroundColor white
+    BorderColor black
+    FontColor black
+    BorderThickness 1
+}
+
+title **UML Діаграма компонентів системи LogistiTrack**\n**Система управління складом та логістикою**
+
+package "**FRONTEND LAYER**" as FrontendLayer {
+    
+    package "**React Application**" as ReactApp {
+        component [**App Component**] as AppComp
+        component [**Auth Components**] as AuthComp
+        component [**Dashboard Components**] as DashboardComp
+        component [**Product Components**] as ProductComp
+        component [**Warehouse Components**] as WarehouseComp
+        component [**Order Components**] as OrderComp
+        component [**Logistics Components**] as LogisticsComp
+        component [**Notification Components**] as NotificationComp
+    }
+    
+    package "**State Management**" as StateManagement {
+        component [**Auth Store**] as AuthStore
+        component [**Inventory Store**] as InventoryStore
+        component [**Order Store**] as OrderStore
+        component [**Logistics Store**] as LogisticsStore
+        component [**Warehouse Store**] as WarehouseStore
+        component [**Notification Store**] as NotificationStore
+    }
+    
+    package "**UI Framework**" as UIFramework {
+        component [**React Router**] as ReactRouter
+        component [**Tailwind CSS**] as TailwindCSS
+        component [**Lucide Icons**] as LucideIcons
+        component [**Recharts**] as Recharts
+        component [**Mapbox GL**] as MapboxGL
+    }
+    
+    package "**Build Tools**" as BuildTools {
+        component [**Vite**] as Vite
+        component [**TypeScript**] as TypeScript
+        component [**ESLint**] as ESLint
+    }
+}
+
+package "**BACKEND LAYER**" as BackendLayer {
+    
+    package "**Supabase Platform**" as SupabasePlatform {
+        component [**Authentication Service**] as AuthService
+        component [**Database API**] as DatabaseAPI
+        component [**Real-time Engine**] as RealtimeEngine
+        component [**Edge Functions**] as EdgeFunctions
+        component [**Storage Service**] as StorageService
+    }
+    
+    package "**Database Layer**" as DatabaseLayer {
+        component [**PostgreSQL Database**] as PostgreSQL
+        component [**Row Level Security**] as RLS
+        component [**Database Triggers**] as DBTriggers
+        component [**Database Functions**] as DBFunctions
+        component [**Database Views**] as DBViews
+    }
+    
+    package "**Business Logic**" as BusinessLogic {
+        component [**Route Optimization**] as RouteOptimization
+        component [**GPS Simulation**] as GPSSimulation
+        component [**Inventory Management**] as InventoryManagement
+        component [**Order Processing**] as OrderProcessing
+        component [**Notification System**] as NotificationSystem
+    }
+}
+
+package "**EXTERNAL SERVICES**" as ExternalServices {
+    component [**Mapbox API**] as MapboxAPI
+    component [**Geocoding Service**] as GeocodingService
+    component [**Route Planning**] as RoutePlanning
+    component [**Map Rendering**] as MapRendering
+}
+
+package "**DATA LAYER**" as DataLayer {
+    
+    package "**Core Tables**" as CoreTables {
+        component [**Users & Profiles**] as UsersProfiles
+        component [**Products & Categories**] as ProductsCategories
+        component [**Warehouses & Zones**] as WarehousesZones
+        component [**Orders & Items**] as OrdersItems
+    }
+    
+    package "**Inventory Tables**" as InventoryTables {
+        component [**Inventory Levels**] as InventoryLevels
+        component [**Inventory Items**] as InventoryItems
+        component [**Inventory Transactions**] as InventoryTransactions
+        component [**Inventory Counts**] as InventoryCounts
+    }
+    
+    package "**Logistics Tables**" as LogisticsTables {
+        component [**Vehicles**] as Vehicles
+        component [**Delivery Routes**] as DeliveryRoutes
+        component [**Delivery Stops**] as DeliveryStops
+        component [**Vehicle Locations**] as VehicleLocations
+    }
+    
+    package "**System Tables**" as SystemTables {
+        component [**Notifications**] as Notifications
+        component [**Order Status History**] as OrderStatusHistory
+        component [**Audit Logs**] as AuditLogs
+    }
+}
+
+' ===== INTERFACES =====
+
+interface "HTTP/REST API" as HTTPAPI
+interface "WebSocket" as WebSocket
+interface "GraphQL" as GraphQL
+interface "Authentication" as AuthInterface
+interface "Real-time Updates" as RealtimeInterface
+interface "File Upload" as FileUploadInterface
+
+interface "Mapbox REST API" as MapboxRESTAPI
+interface "Geocoding API" as GeocodingAPI
+interface "Directions API" as DirectionsAPI
+
+interface "Database Connection" as DBConnection
+interface "SQL Queries" as SQLQueries
+interface "Triggers" as TriggersInterface
+interface "Functions" as FunctionsInterface
+
+' ===== CONNECTIONS =====
+
+' Frontend to State Management
+AppComp --> AuthStore
+AppComp --> InventoryStore
+AppComp --> OrderStore
+AppComp --> LogisticsStore
+AppComp --> WarehouseStore
+AppComp --> NotificationStore
+
+AuthComp --> AuthStore
+DashboardComp --> InventoryStore
+DashboardComp --> OrderStore
+ProductComp --> InventoryStore
+WarehouseComp --> WarehouseStore
+OrderComp --> OrderStore
+LogisticsComp --> LogisticsStore
+NotificationComp --> NotificationStore
+
+' State Management to Backend
+AuthStore --> AuthInterface
+InventoryStore --> HTTPAPI
+OrderStore --> HTTPAPI
+LogisticsStore --> HTTPAPI
+WarehouseStore --> HTTPAPI
+NotificationStore --> RealtimeInterface
+
+' UI Framework connections
+AppComp --> ReactRouter
+AppComp --> TailwindCSS
+AppComp --> LucideIcons
+DashboardComp --> Recharts
+LogisticsComp --> MapboxGL
+
+' Build Tools
+Vite --> TypeScript
+Vite --> ESLint
+
+' Backend Services
+AuthInterface --> AuthService
+HTTPAPI --> DatabaseAPI
+RealtimeInterface --> RealtimeEngine
+WebSocket --> RealtimeEngine
+GraphQL --> DatabaseAPI
+FileUploadInterface --> StorageService
+
+' Supabase to Database
+AuthService --> DBConnection
+DatabaseAPI --> DBConnection
+RealtimeEngine --> DBConnection
+EdgeFunctions --> DBConnection
+
+' Database Layer
+DBConnection --> PostgreSQL
+PostgreSQL --> RLS
+PostgreSQL --> DBTriggers
+PostgreSQL --> DBFunctions
+PostgreSQL --> DBViews
+
+' Business Logic
+EdgeFunctions --> RouteOptimization
+EdgeFunctions --> GPSSimulation
+DBTriggers --> InventoryManagement
+DBTriggers --> OrderProcessing
+DBTriggers --> NotificationSystem
+
+' External Services
+RouteOptimization --> MapboxRESTAPI
+MapboxGL --> MapboxRESTAPI
+LogisticsComp --> GeocodingAPI
+LogisticsComp --> DirectionsAPI
+
+MapboxRESTAPI --> MapboxAPI
+GeocodingAPI --> GeocodingService
+DirectionsAPI --> RoutePlanning
+
+' Database Tables
+PostgreSQL --> SQLQueries
+SQLQueries --> UsersProfiles
+SQLQueries --> ProductsCategories
+SQLQueries --> WarehousesZones
+SQLQueries --> OrdersItems
+SQLQueries --> InventoryLevels
+SQLQueries --> InventoryItems
+SQLQueries --> InventoryTransactions
+SQLQueries --> InventoryCounts
+SQLQueries --> Vehicles
+SQLQueries --> DeliveryRoutes
+SQLQueries --> DeliveryStops
+SQLQueries --> VehicleLocations
+SQLQueries --> Notifications
+SQLQueries --> OrderStatusHistory
+SQLQueries --> AuditLogs
+
+' Triggers and Functions
+TriggersInterface --> DBTriggers
+FunctionsInterface --> DBFunctions
+
+DBTriggers --> InventoryManagement
+DBTriggers --> OrderProcessing
+DBTriggers --> NotificationSystem
+
+' Business Logic to Data
+InventoryManagement --> InventoryLevels
+InventoryManagement --> InventoryTransactions
+OrderProcessing --> OrdersItems
+OrderProcessing --> OrderStatusHistory
+NotificationSystem --> Notifications
+GPSSimulation --> VehicleLocations
+RouteOptimization --> DeliveryRoutes
+
+note top of FrontendLayer
+  **FRONTEND TECHNOLOGIES:**
+  • React 18 + TypeScript
+  • Zustand State Management
+  • Tailwind CSS Styling
+  • Vite Build Tool
+  • Real-time WebSocket
+end note
+
+note top of BackendLayer
+  **BACKEND TECHNOLOGIES:**
+  • Supabase BaaS Platform
+  • PostgreSQL Database
+  • Row Level Security
+  • Real-time Subscriptions
+  • Edge Functions
+end note
+
+note top of ExternalServices
+  **EXTERNAL INTEGRATIONS:**
+  • Mapbox Maps & Geocoding
+  • Route Optimization
+  • GPS Tracking
+  • Map Visualization
+end note
+
+note bottom of DataLayer
+  **DATABASE FEATURES:**
+  • 15+ Tables with Relations
+  • Automated Triggers
+  • Real-time Views
+  • Audit Trail
+  • Data Validation
+end note
+
+note as SecurityNote
+  **SECURITY COMPONENTS:**
+  • JWT Authentication
+  • Role-based Access Control
+  • Row Level Security (RLS)
+  • API Rate Limiting
+  • Data Encryption
+  • Audit Logging
+end note
+
+note as PerformanceNote
+  **PERFORMANCE FEATURES:**
+  • Component Lazy Loading
+  • Database Indexing
+  • Real-time Subscriptions
+  • Optimized Queries
+  • CDN Delivery
+  • Caching Strategy
+end note
+
+@enduml
